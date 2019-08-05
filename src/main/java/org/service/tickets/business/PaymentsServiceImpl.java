@@ -15,10 +15,10 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     @Override
     public TicketStatus processTicket(Long ticketId) {
-        LOGGER.info("Received request to process a ticket #{}", ticketId);
+        LOGGER.info("Received request to process a payment for the ticket #{}", ticketId);
 
         TicketStatus status = getRandomStatus();
-        LOGGER.info("Ticket #{} has been processed. New status {}", ticketId, status);
+        LOGGER.info("A payment for the ticket #{} has been processed. New status {}", ticketId, status);
 
         return status;
     }

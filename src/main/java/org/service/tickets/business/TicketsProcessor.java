@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Transactional
@@ -32,8 +33,8 @@ public class TicketsProcessor {
         this.dao = dao;
         this.processUrl = validateUrl(processUrl);
 
-        finalStatuses = EnumSet.of(TicketStatus.ERROR, TicketStatus.PROCESSED);
-        restTemplate = new RestTemplate();
+        this.finalStatuses = EnumSet.of(TicketStatus.ERROR, TicketStatus.PROCESSED);
+        this.restTemplate = new RestTemplate();
     }
 
     private String validateUrl(String processUrl){
@@ -43,7 +44,7 @@ public class TicketsProcessor {
         return processUrl;
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(fixedRate = 60000)
     public void processTicket() {
         var ticketIdToProcessOpt = dao.findTicketIdByStatusNotIn(finalStatuses);
         if (ticketIdToProcessOpt.isEmpty()){

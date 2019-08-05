@@ -1,5 +1,6 @@
 package org.service.tickets.presentation.controller;
 
+import io.swagger.annotations.*;
 import org.service.tickets.business.PaymentsService;
 import org.service.tickets.domain.model.TicketStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/payments")
+@Api("Payments")
 public class PaymentsController {
     private final PaymentsService service;
 
@@ -18,7 +20,13 @@ public class PaymentsController {
     }
 
     @PostMapping("/process/{ticketId}")
-    public ResponseEntity<TicketStatus> processTicket(@PathVariable("ticketId") Long ticketId) {
+    @ApiOperation("Submit a ticket for processing")
+    @ApiResponses(
+            @ApiResponse(code = 200, message = "New status for the ticket" , response = TicketStatus.class)
+    )
+    public ResponseEntity<TicketStatus> processTicket(
+            @ApiParam(value = "Id of the ticket", required = true) @PathVariable("ticketId") Long ticketId
+    ) {
         var result = service.processTicket(ticketId);
 
         return ResponseEntity.ok(result);

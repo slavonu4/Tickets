@@ -18,6 +18,14 @@ public class NewTicketDTO {
     @ApiModelProperty(value = "Departure date and time", required = true)
     private LocalDateTime departureDate;
 
+    public NewTicketDTO() {
+    }
+
+    public NewTicketDTO(String routeNumber, LocalDateTime departureDate) {
+        this.routeNumber = routeNumber;
+        this.departureDate = departureDate;
+    }
+
     @JsonProperty("routeNumber")
     @Length(min = 1, max = 20)
     public String getRouteNumber() {

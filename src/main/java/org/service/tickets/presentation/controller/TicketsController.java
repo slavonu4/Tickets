@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/tickets")
@@ -26,13 +27,13 @@ public class TicketsController {
             @Valid @RequestBody NewTicketDTO newTicketInfo,
             BindingResult validationResult
     ) throws ValidationFailedException {
-        var newTicketId = service.createTicket(newTicketInfo, validationResult);
+        Long newTicketId = service.createTicket(newTicketInfo, validationResult);
         return new ResponseEntity<>(newTicketId, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/status")
     public ResponseEntity<TicketStatus> getStatusOf(@PathVariable("id") Long ticketId) {
-        var statusOpt = service.getStatusOf(ticketId);
+        Optional<TicketStatus> statusOpt = service.getStatusOf(ticketId);
 
         return ResponseEntity.of(statusOpt);
     }

@@ -32,8 +32,8 @@ public class TicketsServiceTestSuit {
 
     @Test(expected = ValidationFailedException.class)
     public void preventCreationOfTicketWithFailedValidation() throws ValidationFailedException {
-        var ticket = new NewTicketDTO("test", null);
-        var bindingResultMock = mock(BindingResult.class);
+        NewTicketDTO ticket = new NewTicketDTO("test", null);
+        BindingResult bindingResultMock = mock(BindingResult.class);
         when(bindingResultMock.hasErrors()).thenReturn(true);
 
         ticketsService.createTicket(ticket, bindingResultMock);
@@ -41,21 +41,21 @@ public class TicketsServiceTestSuit {
 
     @Test
     public void createValidTicket() throws ValidationFailedException {
-        var ticket = new NewTicketDTO("test", LocalDateTime.now());
-        var ticketModelCaptor = ArgumentCaptor.forClass(Ticket.class);
-        var bindingResultMock = mock(BindingResult.class);
-        var newTicketId = 1L;
+        NewTicketDTO ticket = new NewTicketDTO("test", LocalDateTime.now());
+        ArgumentCaptor<Ticket> ticketModelCaptor = ArgumentCaptor.forClass(Ticket.class);
+        BindingResult bindingResultMock = mock(BindingResult.class);
+        long newTicketId = 1L;
 
 
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(dao.save(ticketModelCaptor.capture())).thenAnswer(invocation ->  {
-                var model = ticketModelCaptor.getValue();
-                model.setId(newTicketId);
+        when(dao.save(ticketModelCaptor.capture())).thenAnswer(invocation -> {
+            Ticket model = ticketModelCaptor.getValue();
+            model.setId(newTicketId);
 
-                return model;
+            return model;
         });
 
-        var result = ticketsService.createTicket(ticket, bindingResultMock);
+        Long result = ticketsService.createTicket(ticket, bindingResultMock);
 
         Assert.assertEquals(newTicketId, result.longValue());
     }

@@ -3,6 +3,7 @@ package org.service.tickets.domain.dao;
 import org.service.tickets.domain.model.Ticket;
 import org.service.tickets.domain.model.TicketStatus;
 import org.service.tickets.domain.repository.TicketsRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
@@ -29,8 +30,8 @@ public class TicketsDAOImpl implements TicketsDAO {
 
     @Override
     public Optional<Long> findTicketIdByStatusNotIn(Set<TicketStatus> statuses) {
-        var pageRequest = PageRequest.of(0, 1);
-        var result = repository.findIdByStatusNotIn(statuses, pageRequest);
+        PageRequest pageRequest = PageRequest.of(0, 1);
+        Page<Long> result = repository.findIdByStatusNotIn(statuses, pageRequest);
 
         if (result.isEmpty())
             return Optional.empty();

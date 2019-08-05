@@ -24,8 +24,8 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     private TicketStatus getRandomStatus() {
-        var statusesAmount = TicketStatus.values().length;
-        var statusIndex = random.nextInt(statusesAmount);
+        int statusesAmount = TicketStatus.values().length;
+        int statusIndex = random.nextInt(statusesAmount);
 
         return TicketStatus.values()[statusIndex];
     }

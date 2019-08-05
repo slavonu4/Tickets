@@ -27,7 +27,7 @@ public class PaymentsController {
     public ResponseEntity<TicketStatus> processTicket(
             @ApiParam(value = "Id of the ticket", required = true) @PathVariable("ticketId") Long ticketId
     ) {
-        var result = service.processTicket(ticketId);
+        TicketStatus result = service.processTicket(ticketId);
 
         return ResponseEntity.ok(result);
     }

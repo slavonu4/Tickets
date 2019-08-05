@@ -6,6 +6,7 @@ import org.service.tickets.domain.model.TicketStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -46,21 +47,21 @@ public class TicketsProcessor {
 
     @Scheduled(fixedRate = 60000)
     public void processTicket() {
-        var ticketIdToProcessOpt = dao.findTicketIdByStatusNotIn(finalStatuses);
-        if (ticketIdToProcessOpt.isEmpty()){
+        Optional<Long> ticketIdToProcessOpt = dao.findTicketIdByStatusNotIn(finalStatuses);
+        if (!ticketIdToProcessOpt.isPresent()){
             LOGGER.info("There are no more tickets for processing");
             return;
         }
 
-        var ticketIdToProcess = ticketIdToProcessOpt.get();
+        Long ticketIdToProcess = ticketIdToProcessOpt.get();
         LOGGER.info("The ticket #{} was selected to be processed", ticketIdToProcess);
 
         processTicket(ticketIdToProcess).ifPresent(newStatus -> dao.changeStatusFor(ticketIdToProcess, newStatus));
     }
 
     private Optional<TicketStatus> processTicket(Long ticketIdToProcess) {
-        var url = processUrl.replace("{ticketId}", ticketIdToProcess.toString());
-        var response = restTemplate.postForEntity(url, null, TicketStatus.class);
+        String url = processUrl.replace("{ticketId}", ticketIdToProcess.toString());
+        ResponseEntity<TicketStatus> response = restTemplate.postForEntity(url, null, TicketStatus.class);
         if (response.getStatusCode().is2xxSuccessful()) {
             TicketStatus result = response.getBody();
             LOGGER.info("The ticket #{} was processed. New status: {}", ticketIdToProcess, result);

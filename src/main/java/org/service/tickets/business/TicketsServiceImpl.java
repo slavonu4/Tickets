@@ -25,8 +25,8 @@ public class TicketsServiceImpl implements TicketsService {
         if (validationResult.hasErrors())
             throw new ValidationFailedException(validationResult);
 
-        var model = new Ticket(newTicketInfo.getRouteNumber(), newTicketInfo.getDepartureDate());
-        var savedModel = dao.save(model);
+        Ticket model = new Ticket(newTicketInfo.getRouteNumber(), newTicketInfo.getDepartureDate());
+        Ticket savedModel = dao.save(model);
 
         return savedModel.getId();
     }

@@ -61,7 +61,7 @@ public class TicketsControllerTestSuit {
 
     @Test
     public void getStatusOfExistingTicket() throws Exception {
-        var requestedTicket = 1L;
+        long requestedTicket = 1L;
         TicketStatus response = TicketStatus.ERROR;
         when(ticketsService.getStatusOf(eq(requestedTicket))).thenReturn(Optional.of(response));
 
@@ -74,7 +74,7 @@ public class TicketsControllerTestSuit {
 
     @Test
     public void successfullyCreateTicket() throws Exception {
-        var request = new NewTicketDTO("SomeRoute", LocalDateTime.now());
+        NewTicketDTO request = new NewTicketDTO("SomeRoute", LocalDateTime.now());
         when(ticketsService.createTicket(any(), any())).thenReturn(1L);
 
         mvcMock.perform(

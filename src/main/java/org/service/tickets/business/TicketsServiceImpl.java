@@ -4,8 +4,10 @@ import org.service.tickets.domain.dao.TicketsDAO;
 import org.service.tickets.domain.model.Ticket;
 import org.service.tickets.domain.model.TicketStatus;
 import org.service.tickets.presentation.dto.NewTicketDTO;
+import org.service.tickets.presentation.exception.ValidationFailedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
 import java.util.Optional;
 
@@ -19,7 +21,10 @@ public class TicketsServiceImpl implements TicketsService {
     }
 
     @Override
-    public Long createTicket(NewTicketDTO newTicketInfo) {
+    public Long createTicket(NewTicketDTO newTicketInfo, BindingResult validationResult) throws ValidationFailedException {
+        if (validationResult.hasErrors())
+            throw new ValidationFailedException(validationResult);
+
         var model = new Ticket(newTicketInfo.getRouteNumber(), newTicketInfo.getDepartureDate());
         var savedModel = dao.save(model);
 

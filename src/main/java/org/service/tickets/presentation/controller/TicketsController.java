@@ -26,10 +26,7 @@ public class TicketsController {
             @Valid @RequestBody NewTicketDTO newTicketInfo,
             BindingResult validationResult
     ) throws ValidationFailedException {
-        if (validationResult.hasErrors())
-            throw new ValidationFailedException(validationResult);
-
-        var newTicketId = service.createTicket(newTicketInfo);
+        var newTicketId = service.createTicket(newTicketInfo, validationResult);
         return new ResponseEntity<>(newTicketId, HttpStatus.OK);
     }
 

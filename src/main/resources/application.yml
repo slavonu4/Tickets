@@ -9,3 +9,8 @@ spring:
     password: sells_tickets
   jpa:
     open-in-view: false
+
+service:
+  payment:
+    url:
+      process: http://localhost:8080/payments/process/{ticketId}

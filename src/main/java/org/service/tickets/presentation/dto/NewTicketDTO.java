@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.hibernate.validator.constraints.Length;
-import org.service.tickets.presentation.deserializer.LocalDateTimeDeserializer;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;

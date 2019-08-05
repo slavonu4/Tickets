@@ -9,8 +9,11 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public class NewTicketDTO {
-    private final String routeNumber;
-    private final LocalDateTime departureDate;
+    private String routeNumber;
+    private LocalDateTime departureDate;
+
+    public NewTicketDTO() {
+    }
 
     public NewTicketDTO(String routeNumber, LocalDateTime departureDate) {
         this.routeNumber = routeNumber;
@@ -23,9 +26,17 @@ public class NewTicketDTO {
         return routeNumber;
     }
 
+    public void setRouteNumber(String routeNumber) {
+        this.routeNumber = routeNumber;
+    }
+
     @NotNull
     @JsonProperty("departureDate")
     public LocalDateTime getDepartureDate() {
         return departureDate;
+    }
+
+    public void setDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
     }
 }
